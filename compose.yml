@@ -1,0 +1,32 @@
+services:
+  app:
+    image: node:18.13.0
+    working_dir: /app
+    entrypoint: ["yarn", "dev"]
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./src:/app
+  api:
+    image: dmtroyer/bookmarks-api
+    build: api
+    depends_on:
+      - db
+    environment:
+      - MARIADB_PASSWORD
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./api:/home/node/app
+  db:
+    image: mariadb:10.10.2
+    environment:
+      - MARIADB_ALLOW_EMPTY_ROOT_PASSWORD=true
+      - MARIADB_DATABASE=bookmarks
+      - MARIADB_USER=bookmarks
+      - MARIADB_PASSWORD
+    volumes:
+      - data:/var/lib/mysql
+
+volumes:
+  data:
