@@ -6,7 +6,7 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./src:/app
+      - ./app:/app
   api:
     image: dmtroyer/bookmarks-api
     build: api
